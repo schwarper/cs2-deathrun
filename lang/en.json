@@ -1,0 +1,6 @@
+{
+    "Minimum player": "{white}Need to minimum {green}{0} players {white}for deathrun.",
+    "Is terrorist": "{green}{0} {white}is terrorist now.",
+    "CT Lost": "{white}CT players are slayed despite losing.",
+    "T Left": "{white}Terrorist left the game. Round restarting..."
+}
