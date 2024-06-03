@@ -2,8 +2,6 @@ using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Commands;
 using CounterStrikeSharp.API.Modules.Entities.Constants;
-using CounterStrikeSharp.API.Modules.Memory;
-using CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
 using CounterStrikeSharp.API.Modules.Utils;
 using static Deathrun.Deathrun;
 
@@ -19,16 +17,15 @@ public static class Event
 
         Instance.RegisterEventHandler<EventPlayerSpawn>(OnPlayerSpawn);
         Instance.RegisterEventHandler<EventRoundEnd>(OnRoundEnd);
+        Instance.RegisterEventHandler<EventRoundStart>(OnRoundStart);
         Instance.RegisterEventHandler<EventPlayerDisconnect>(OnPlayerDisconnect);
         Instance.RegisterEventHandler<EventPlayerConnectFull>(OnPlayerConnectFull);
         Instance.RegisterEventHandler<EventPlayerDeath>(OnPlayerDeath);
-        Instance.RegisterEventHandler<EventWarmupEnd>(OnWarmupEnd);
     }
 
     public static void Unload()
     {
         Instance.RemoveCommandListener("jointeam", Command_Jointeam, HookMode.Pre);
-        VirtualFunctions.CBaseEntity_TakeDamageOldFunc.Unhook(OnTakeDamage, HookMode.Pre);
     }
 
     public static HookResult Command_Jointeam(CCSPlayerController? player, CommandInfo commandInfo)
@@ -46,10 +43,7 @@ public static class Event
 
         if (PlayerTerrorist == null)
         {
-            if (!Terrorist.Find())
-            {
-                return HookResult.Continue;
-            }
+            return HookResult.Continue;
         }
 
         CCSPlayerController? player = @event.Userid;
@@ -97,7 +91,14 @@ public static class Event
             }
         }
 
-        Terrorist.Find();
+        Terrorist.Find(false);
+
+        return HookResult.Continue;
+    }
+
+    public static HookResult OnRoundStart(EventRoundStart @event, GameEventInfo info)
+    {
+        Terrorist.Find(true);
 
         return HookResult.Continue;
     }
@@ -154,52 +155,6 @@ public static class Event
         Server.PrintToChatAll(Instance.Config.Tag + Instance.Localizer["T Left"]);
 
         Utilities.FindAllEntitiesByDesignerName<CCSGameRulesProxy>("cs_gamerules").FirstOrDefault()?.GameRules?.TerminateRound(1.0f, RoundEndReason.RoundDraw);
-
-        return HookResult.Continue;
-    }
-
-    public static HookResult OnWarmupEnd(EventWarmupEnd @event, GameEventInfo info)
-    {
-        Terrorist.Find();
-
-        return HookResult.Continue;
-    }
-
-    public static HookResult OnTakeDamage(DynamicHook hook)
-    {
-        if (Instance.Config.TKills == 0 || PlayerTerrorist == null)
-        {
-            return HookResult.Continue;
-        }
-
-        CCSPlayerPawn entity = hook.GetParam<CCSPlayerPawn>(0);
-
-        if (entity.DesignerName != "player")
-        {
-            return HookResult.Continue;
-        }
-
-        CCSPlayerController victim = entity.Controller.Value!.As<CCSPlayerController>();
-
-        if (victim.Team != CsTeam.CounterTerrorist)
-        {
-            return HookResult.Continue;
-        }
-
-        CTakeDamageInfo? info = hook.GetParam<CTakeDamageInfo>(1);
-
-        if (info.Attacker.IsValid)
-        {
-            return HookResult.Continue;
-        }
-
-        if (info.Damage < victim.Health)
-        {
-            return HookResult.Continue;
-        }
-
-        KillInfo.Create(victim, PlayerTerrorist);
-        hook.SetReturn(false);
 
         return HookResult.Continue;
     }
