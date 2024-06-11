@@ -4,6 +4,7 @@ using CounterStrikeSharp.API.Modules.Commands;
 using CounterStrikeSharp.API.Modules.Entities.Constants;
 using CounterStrikeSharp.API.Modules.Utils;
 using static Deathrun.Deathrun;
+using static CounterStrikeSharp.API.Core.Listeners;
 
 namespace Deathrun;
 
@@ -14,6 +15,8 @@ public static class Event
     public static void Load()
     {
         Instance.AddCommandListener("jointeam", Command_Jointeam, HookMode.Pre);
+
+        Instance.RegisterListener<OnMapStart>(OnMapStart);
 
         Instance.RegisterEventHandler<EventPlayerSpawn>(OnPlayerSpawn);
         Instance.RegisterEventHandler<EventRoundEnd>(OnRoundEnd);
@@ -31,6 +34,11 @@ public static class Event
     public static HookResult Command_Jointeam(CCSPlayerController? player, CommandInfo commandInfo)
     {
         return HookResult.Handled;
+    }
+
+    public static void OnMapStart(string mapname)
+    {
+        Server.ExecuteCommand("mp_restartgame 15");
     }
 
     public static HookResult OnPlayerSpawn(EventPlayerSpawn @event, GameEventInfo info)
