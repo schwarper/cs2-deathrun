@@ -7,7 +7,7 @@ namespace Deathrun;
 public class Deathrun : BasePlugin, IPluginConfig<DeathrunConfig>
 {
     public override string ModuleName => "Deathrun Mod";
-    public override string ModuleVersion => "0.0.1";
+    public override string ModuleVersion => "0.0.2";
     public override string ModuleAuthor => "schwarper";
 
     public DeathrunConfig Config { get; set; } = new DeathrunConfig();
