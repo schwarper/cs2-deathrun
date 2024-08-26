@@ -1,0 +1,7 @@
+{
+	"Respawn time is over": "{white}CT Respawn time is {red}over.",
+	"T Left game": "{white}Terrorist {green}{0} {white}left the game.",
+	"Terrorist is": "{green}{0} {white}is terorist now.",
+	"Terrorists are": "{green}{0} {white}are terorist now.",
+	"Not enough player":  "{white}Not enough player for {red}deathrun"
+}

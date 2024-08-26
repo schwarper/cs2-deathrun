@@ -1,0 +1,16 @@
+[Tag]
+Tag = "{red}[Deathrun] "
+
+[Deathrun]
+TerroristCount = { 2 = 1, 16 = 2, 26 = 3 }
+SaveTerroristDisconnect = true
+
+[Terrorist]
+Speed = 2.0
+GiveFragForRoundWin = 1
+GiveFragWhenCTDies = true
+NoFallDamage = true
+
+[CounterTerrorist]
+SlayCTIfLose = true
+RespawnTime = 30.0
