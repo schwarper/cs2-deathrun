@@ -13,12 +13,11 @@ Discord link : [Discord server](https://discord.gg/4zQfUzjk36)
 Tag = "{red}[Deathrun] "
 
 [Deathrun]
-TerroristCount = { 2 = 1, 16 = 2, 26 = 3 }
-SaveTerroristDisconnect = true
+TerroristCount = { 2 = 1, 16 = 2, 26 = 3 } # Sets the number of terrorists.
+SaveTerroristDisconnect = true # Detects a player who leaves the game as a terrorist. Makes him a terrorist when he enters the game.
 
 [Terrorist]
 Speed = 2.0
-GiveFragForRoundWin = 1
 GiveFragWhenCTDies = true
 NoFallDamage = true
 
