@@ -7,8 +7,8 @@ namespace Deathrun;
 
 public static class Terrorist
 {
-    public static HashSet<CCSPlayerController> TerroristsList { get; set; } = [];
-    public static HashSet<CCSPlayerController> FugitiveTerroristsList { get; set; } = [];
+    public static readonly HashSet<CCSPlayerController> TerroristsList = [];
+    public static readonly HashSet<CCSPlayerController> FugitiveTerroristsList = [];
     public static readonly Random random = new();
 
     public static CCSPlayerController? GetRandomTerrorist()
@@ -74,7 +74,7 @@ public static class Terrorist
 
         if (!Config.SaveTerroristDisconnect)
         {
-            FugitiveTerroristsList.Clear(); // Config.SaveTerroristDisconnect false ise liste temizlenir.
+            FugitiveTerroristsList.Clear();
         }
 
         var players = Utilities.GetPlayers().Except(TerroristsList).ToList();
@@ -108,7 +108,7 @@ public static class Terrorist
             {
                 List<CCSPlayerController> remainingPlayers = Config.SaveTerroristDisconnect
                     ? FugitiveTerroristsList.Where(p => p.IsValid).ToList()
-                    : new List<CCSPlayerController>();
+                    : [];
 
                 if (remainingPlayers.Count == 0)
                 {

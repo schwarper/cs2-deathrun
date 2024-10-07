@@ -12,14 +12,17 @@ public static class Config_Config
 
     public static void Load()
     {
-        string assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? "";
-        string cfgPath = $"{Server.GameDirectory}/csgo/addons/counterstrikesharp/configs/plugins/{assemblyName}";
+        string assemblyName = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty;
+        string configPath = Path.Combine(Server.GameDirectory,
+                "csgo",
+                "addons",
+                "counterstrikesharp",
+                "configs",
+                "plugins",
+                assemblyName,
+                "config.toml"
+            );
 
-        LoadConfig($"{cfgPath}/config.toml");
-    }
-
-    private static void LoadConfig(string configPath)
-    {
         if (!File.Exists(configPath))
         {
             throw new FileNotFoundException($"Configuration file not found: {configPath}");

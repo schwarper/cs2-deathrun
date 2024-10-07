@@ -15,7 +15,7 @@ namespace Deathrun;
 public class Deathrun : BasePlugin
 {
     public override string ModuleName => "Deathrun";
-    public override string ModuleVersion => "0.0.1";
+    public override string ModuleVersion => "0.0.2";
     public override string ModuleAuthor => "schwarper";
 
     public Timer? RespawnTimer { get; set; }
@@ -89,9 +89,7 @@ public class Deathrun : BasePlugin
     [GameEventHandler(HookMode.Pre)]
     public HookResult OnPlayerDeath(EventPlayerDeath @event, GameEventInfo info)
     {
-        var player = @event.Userid;
-
-        if (player == null)
+        if (@event.Userid is not CCSPlayerController player)
         {
             return HookResult.Continue;
         }
@@ -135,9 +133,12 @@ public class Deathrun : BasePlugin
     [GameEventHandler]
     public HookResult OnPlayerDisconnect(EventPlayerDisconnect @event, GameEventInfo info)
     {
-        CCSPlayerController? player = @event.Userid;
+        if (@event.Userid is not CCSPlayerController player)
+        {
+            return HookResult.Continue;
+        }
 
-        if (player == null || !TerroristsList.Contains(player))
+        if (TerroristsList.Contains(player))
         {
             return HookResult.Continue;
         }
@@ -166,9 +167,7 @@ public class Deathrun : BasePlugin
     [GameEventHandler]
     public HookResult OnPlayerConnect(EventPlayerConnectFull @event, GameEventInfo info)
     {
-        CCSPlayerController? player = @event.Userid;
-
-        if (player == null)
+        if (@event.Userid is not CCSPlayerController player)
         {
             return HookResult.Continue;
         }
@@ -193,9 +192,12 @@ public class Deathrun : BasePlugin
     [GameEventHandler]
     public HookResult OnPlayerSpawn(EventPlayerSpawn @event, GameEventInfo info)
     {
-        CCSPlayerController? player = @event.Userid;
+        if (@event.Userid is not CCSPlayerController player)
+        {
+            return HookResult.Continue;
+        }
 
-        if (player == null || !TerroristsList.Contains(player))
+        if (!TerroristsList.Contains(player))
         {
             return HookResult.Continue;
         }
@@ -219,7 +221,7 @@ public class Deathrun : BasePlugin
 
         var info = hook.GetParam<CTakeDamageInfo>(1);
 
-        if (Config.NoFallDamage && info.BitsDamageType == (int)DamageTypes_t.DMG_FALL)
+        if (Config.NoFallDamage && info.BitsDamageType == DamageTypes_t.DMG_FALL)
         {
             var player = new CCSPlayerPawn(entity.Handle).OriginalController.Value;
 
