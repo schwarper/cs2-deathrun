@@ -39,14 +39,15 @@ public static class Terrorist
             .FirstOrDefault()
             .Value;
 
-        List<CCSPlayerController> selectedPlayers = Config.SaveTerroristDisconnect
-            ? FugitiveTerroristsList.Take(terroristsNeeded).ToList()
-            : [];
+        List<CCSPlayerController> selectedPlayers = Config.SaveTerroristDisconnect ?
+            FugitiveTerroristsList.Where(p => p.IsValid).Take(terroristsNeeded).ToList() :
+            [];
 
         TerroristsList.UnionWith(selectedPlayers);
         FugitiveTerroristsList.ExceptWith(selectedPlayers);
 
         int remainingTerroristsNeeded = terroristsNeeded - selectedPlayers.Count;
+
         if (remainingTerroristsNeeded > 0)
         {
             selectedPlayers = players.Except(TerroristsList).OrderBy(_ => random.Next()).Take(remainingTerroristsNeeded).ToList();

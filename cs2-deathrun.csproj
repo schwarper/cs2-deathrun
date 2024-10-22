@@ -4,15 +4,21 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<OutputPath>BuildOutput\cs2-deathrun\</OutputPath>
+	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CounterStrikeSharp.API" Version="1.0.276" />
+    <PackageReference Include="CounterStrikeSharp.API" Version="1.0.284" />
     <PackageReference Include="Tomlyn" Version="0.17.0" />
   </ItemGroup>
 
   <ItemGroup>
 	  <None Update="lang\**\*.*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+
+  <Target Name="CopyNuGetAssemblies" AfterTargets="Build">
+    <Copy SourceFiles="Tomlyn.dll" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>
