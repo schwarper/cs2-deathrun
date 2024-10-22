@@ -23,7 +23,7 @@ public class Deathrun : BasePlugin
 
     public override void Load(bool hotReload)
     {
-        AddCommandListener("jointeam", Command_Jointeam);
+        AddCommandListener("jointeam", Command_Jointeam, HookMode.Pre);
         VirtualFunctions.CBaseEntity_TakeDamageOldFunc.Hook(OnTakeDamage, HookMode.Pre);
         RegisterListener<OnMapStart>(OnMapStart);
 
@@ -32,6 +32,7 @@ public class Deathrun : BasePlugin
 
     public override void Unload(bool hotReload)
     {
+        RemoveCommandListener("jointeam", Command_Jointeam, HookMode.Pre);
         VirtualFunctions.CBaseEntity_TakeDamageOldFunc.Unhook(OnTakeDamage, HookMode.Pre);
         RemoveListener<OnMapStart>(OnMapStart);
     }
