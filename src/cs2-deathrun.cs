@@ -15,7 +15,7 @@ namespace Deathrun;
 public class Deathrun : BasePlugin
 {
     public override string ModuleName => "Deathrun";
-    public override string ModuleVersion => "0.0.2";
+    public override string ModuleVersion => "0.0.3";
     public override string ModuleAuthor => "schwarper";
 
     public Timer? RespawnTimer { get; set; }
