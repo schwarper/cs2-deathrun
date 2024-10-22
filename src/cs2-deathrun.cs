@@ -98,7 +98,11 @@ public class Deathrun : BasePlugin
         {
             case CsTeam.Terrorist:
                 {
-                    player.ChangeTeam(CsTeam.CounterTerrorist);
+                    AddTimer(0.1f, () =>
+                    {
+                        player.ChangeTeam(CsTeam.CounterTerrorist);
+                    });
+
                     break;
                 }
             case CsTeam.CounterTerrorist:
